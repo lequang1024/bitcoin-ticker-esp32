@@ -1,3 +1,3 @@
 // rename this file to `secrets.h`
-#define SSID "YOUR WIFI NAME"
-#define WIFI_PASSWORD "YOUR WIFI PASSWORD"
+#define SECRET_SSID "q"
+#define SECRET_WIFI_PASSWORD "q"

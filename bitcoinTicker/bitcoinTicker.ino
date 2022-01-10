@@ -1,7 +1,7 @@
 #include <Adafruit_SSD1306.h>
-#include <WiFi.h>
+#include <ESP8266WiFi.h>
 #include <Wire.h>
-#include <HTTPClient.h>
+#include <ESP8266HTTPClient.h>
 #include <NTPClient.h> 
 #include <WiFiUdp.h>
 #include "secrets.h" // WiFi Configuration (WiFi name and Password)
@@ -66,10 +66,10 @@ void loop() {
   Serial.print("Connecting to ");
   Serial.println(url);
 
-  http.begin(url);
+  http.begin(client,url);
   int httpCode = http.GET();
-  StaticJsonDocument<2000> doc;
-  DeserializationError error = deserializeJson(doc, http.getString());
+  DynamicJsonDocument doc(2048);
+  DeserializationError error = deserializeJson(doc, http.getStream());
 
   if (error) {
     Serial.print(F("deserializeJson Failed"));
@@ -86,10 +86,10 @@ void loop() {
   http.end();
 
   Serial.print("Getting history...");
-  StaticJsonDocument<2000> historyDoc;
-  http.begin(historyURL);
+  DynamicJsonDocument historyDoc(2048);
+  http.begin(client,historyURL);
   int historyHttpCode = http.GET();
-  DeserializationError historyError = deserializeJson(historyDoc, http.getString());
+  DeserializationError historyError = deserializeJson(historyDoc, http.getStream());
 
   if (historyError) {
     Serial.print(F("deserializeJson(History) failed"));
